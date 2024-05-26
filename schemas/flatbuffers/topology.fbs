@@ -1,0 +1,101 @@
+namespace topology;
+
+table AddedConnection {
+  transaction: string;
+  from: [ubyte](required); // encoded PeerId
+  from_location: float64;
+  to: [ubyte](required);   // encoded PeerId
+  to_location: float64;
+}
+
+table RemovedConnection {
+  at: [ubyte](required);
+  from: [ubyte](required);
+}
+
+table Error {
+  message: string(required);
+}
+
+union PeerChangeType {
+  AddedConnection,
+  RemovedConnection,
+  Error,
+}
+
+table PeerChange {
+    current_state: [AddedConnection];
+    change: PeerChangeType;
+}
+
+table Ok {
+  message: string;
+}
+
+union Response {
+  Error,
+  Ok
+}
+
+table ControllerResponse {
+  response:Response(required);
+}
+
+
+table PutRequest {
+  transaction: string(required);
+  key: string(required);
+  requester: string(required);
+  target: string(required);
+}
+
+table UpdateRequest {
+  transaction: string(required);
+  key: string(required);
+  requester: string(required);
+  target: string(required);
+}
+
+table PutSuccess {
+  transaction: string(required);
+  requester: string(required);
+  target: string(required);
+  key: string(required);
+}
+
+table PutFailure {
+  transaction: string(required);
+  requester: string(required);
+  target: string(required);
+  key: string(required);
+}
+
+table UpdateSuccess {
+  transaction: string(required);
+  requester: string(required);
+  target: string(required);
+  key: string(required);
+}
+
+table UpdateFailure {
+  transaction: string(required);
+  requester: string(required);
+  target: string(required);
+  key: string(required);
+}
+
+union ContractChangeType {
+  PutRequest,
+  PutSuccess,
+  PutFailure,
+  UpdateRequest,
+  UpdateSuccess,
+  UpdateFailure,
+}
+
+table ContractChange {
+  contract_id: string(required);
+  change: ContractChangeType;
+}
+
+
